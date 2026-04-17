@@ -1,3 +1,10 @@
+> Part of the [Vector Lab](https://github.com/vector-lab-tools) — research instruments for critical vector theory.
+> [Website and map](https://vector-lab-tools.github.io) · [Org profile](https://github.com/vector-lab-tools)
+>
+> **Tier:** single-object scope. **Object:** a corpus of theoretical texts.
+>
+> **Sibling instruments:** [Vectorscope](https://github.com/vector-lab-tools/vectorscope) · [Manifoldscope](https://github.com/vector-lab-tools/manifoldscope) · [Manifold Atlas](https://github.com/vector-lab-tools/manifold-atlas) · [LLMbench](https://github.com/vector-lab-tools/LLMbench)
+
 # Theoryscope
 
 **A renormalisation-group workbench for corpora of theoretical texts.**
