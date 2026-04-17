@@ -21,8 +21,13 @@ from pydantic import BaseModel, Field
 from corpus.pipeline import CorpusSpec, ZoteroSourceSpec
 from operations.corpus_map import compute_corpus_map
 from operations.eigendirections import compute_eigendirections
+from operations.flow import (
+    compute_coarse_graining_trajectory,
+    compute_fixed_points,
+    compute_universality_classes,
+)
 
-app = FastAPI(title="Theoryscope Backend", version="0.1.5")
+app = FastAPI(title="Theoryscope Backend", version="0.2.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -85,6 +90,13 @@ class EigendirectionsRequest(BaseModel):
     n_loadings: int = 5
 
 
+class FlowRequest(BaseModel):
+    """Shared request shape for the three Flow operations."""
+    corpus: CorpusSourcePayload = Field(default_factory=CorpusSourcePayload)
+    n_steps: int = 6
+    seed: int = 0
+
+
 class ZoteroCollectionsRequest(BaseModel):
     library_id: str
     library_type: str
@@ -110,10 +122,16 @@ async def status() -> Dict[str, Any]:
     return {
         "status": "ok",
         "tool": "theoryscope",
-        "version": "0.1.5",
-        "phase": "1.5",
+        "version": "0.2.0",
+        "phase": "2",
         "corpora_available": ["philosophy-of-technology-v1", "zotero"],
-        "operations_available": ["corpus_map", "eigendirections"],
+        "operations_available": [
+            "corpus_map",
+            "eigendirections",
+            "coarse_graining_trajectory",
+            "fixed_points",
+            "universality_classes",
+        ],
     }
 
 
@@ -140,6 +158,54 @@ async def eigendirections(req: EigendirectionsRequest) -> Dict[str, Any]:
         )
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/coarse-graining-trajectory")
+async def coarse_graining_trajectory(req: FlowRequest) -> Dict[str, Any]:
+    spec = req.corpus.to_spec()
+    try:
+        return await asyncio.to_thread(
+            compute_coarse_graining_trajectory,
+            spec,
+            req.n_steps,
+            req.seed,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/fixed-points")
+async def fixed_points(req: FlowRequest) -> Dict[str, Any]:
+    spec = req.corpus.to_spec()
+    try:
+        return await asyncio.to_thread(
+            compute_fixed_points,
+            spec,
+            req.n_steps,
+            req.seed,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/universality-classes")
+async def universality_classes(req: FlowRequest) -> Dict[str, Any]:
+    spec = req.corpus.to_spec()
+    try:
+        return await asyncio.to_thread(
+            compute_universality_classes,
+            spec,
+            req.n_steps,
+            req.seed,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:  # noqa: BLE001
         raise HTTPException(status_code=500, detail=str(e))
 

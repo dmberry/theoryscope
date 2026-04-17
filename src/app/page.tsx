@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { CoarseGrainingTrajectory } from "@/components/operations/CoarseGrainingTrajectory";
 import { CorpusMap } from "@/components/operations/CorpusMap";
 import { Eigendirections } from "@/components/operations/Eigendirections";
+import { FixedPointFinder } from "@/components/operations/FixedPointFinder";
+import { UniversalityClasses } from "@/components/operations/UniversalityClasses";
 import { CorpusLoader } from "@/components/layout/CorpusLoader";
 import { CorpusSourcePanel } from "@/components/layout/CorpusSourcePanel";
 import { Header } from "@/components/layout/Header";
@@ -21,10 +24,10 @@ const TABS: Tab[] = [
   { key: "eigendirections", label: "Eigendirections", group: "Inspect", component: <Eigendirections /> },
   { key: "concept-locator", label: "Concept Locator", group: "Inspect", component: null },
   { key: "author-constellation", label: "Author Constellation", group: "Inspect", component: null },
-  { key: "coarse-graining", label: "Coarse-Graining Trajectory", group: "Flow", component: null },
-  { key: "fixed-points", label: "Fixed Point Finder", group: "Flow", component: null },
+  { key: "coarse-graining", label: "Coarse-Graining Trajectory", group: "Flow", component: <CoarseGrainingTrajectory /> },
+  { key: "fixed-points", label: "Fixed Point Finder", group: "Flow", component: <FixedPointFinder /> },
   { key: "operator-spectrum", label: "Relevant / Irrelevant Operators", group: "Flow", component: null },
-  { key: "universality", label: "Universality Classes", group: "Flow", component: null },
+  { key: "universality", label: "Universality Classes", group: "Flow", component: <UniversalityClasses /> },
   { key: "temporal-flow", label: "Temporal RG Flow", group: "Flow", component: null },
   { key: "symmetry-breaking", label: "Symmetry Breaking Map", group: "Critique", component: null },
   { key: "phase-diagram", label: "Phase Diagram", group: "Critique", component: null },
