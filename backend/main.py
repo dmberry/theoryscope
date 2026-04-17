@@ -21,13 +21,19 @@ from pydantic import BaseModel, Field
 from corpus.pipeline import CorpusSpec, ZoteroSourceSpec
 from operations.corpus_map import compute_corpus_map
 from operations.eigendirections import compute_eigendirections
+from operations.embedding_probe import (
+    compute_embedding_probe,
+    list_available_models,
+)
 from operations.flow import (
     compute_coarse_graining_trajectory,
     compute_fixed_points,
     compute_universality_classes,
 )
+from operations.forgetting import compute_forgetting_curve
+from operations.perturbation import compute_perturbation_test
 
-app = FastAPI(title="Theoryscope Backend", version="0.2.0")
+app = FastAPI(title="Theoryscope Backend", version="0.3.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -97,6 +103,29 @@ class FlowRequest(BaseModel):
     seed: int = 0
 
 
+class EmbeddingProbeRequest(BaseModel):
+    corpus: CorpusSourcePayload = Field(default_factory=CorpusSourcePayload)
+    probe_model_id: str
+    n_components: int = 5
+    n_loadings: int = 3
+
+
+class PerturbationRequest(BaseModel):
+    corpus: CorpusSourcePayload = Field(default_factory=CorpusSourcePayload)
+    perturbation_text: str
+    perturbation_label: str = "perturbation"
+    n_components: int = 5
+    n_loadings: int = 3
+
+
+class ForgettingRequest(BaseModel):
+    corpus: CorpusSourcePayload = Field(default_factory=CorpusSourcePayload)
+    n_components: int = 5
+    drop_fraction: float = 0.2
+    n_iterations: int = 20
+    seed: int = 0
+
+
 class ZoteroCollectionsRequest(BaseModel):
     library_id: str
     library_type: str
@@ -122,8 +151,8 @@ async def status() -> Dict[str, Any]:
     return {
         "status": "ok",
         "tool": "theoryscope",
-        "version": "0.2.0",
-        "phase": "2",
+        "version": "0.3.0",
+        "phase": "3",
         "corpora_available": ["philosophy-of-technology-v1", "zotero"],
         "operations_available": [
             "corpus_map",
@@ -131,8 +160,16 @@ async def status() -> Dict[str, Any]:
             "coarse_graining_trajectory",
             "fixed_points",
             "universality_classes",
+            "embedding_probe",
+            "perturbation_test",
+            "forgetting_curve",
         ],
     }
+
+
+@app.get("/embedding-probe/models")
+async def embedding_probe_models() -> Dict[str, Any]:
+    return {"models": list_available_models()}
 
 
 @app.post("/corpus-map")
@@ -202,6 +239,59 @@ async def universality_classes(req: FlowRequest) -> Dict[str, Any]:
             compute_universality_classes,
             spec,
             req.n_steps,
+            req.seed,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/embedding-probe")
+async def embedding_probe(req: EmbeddingProbeRequest) -> Dict[str, Any]:
+    spec = req.corpus.to_spec()
+    try:
+        return await asyncio.to_thread(
+            compute_embedding_probe,
+            spec,
+            req.probe_model_id,
+            req.n_components,
+            req.n_loadings,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/perturbation-test")
+async def perturbation_test(req: PerturbationRequest) -> Dict[str, Any]:
+    spec = req.corpus.to_spec()
+    try:
+        return await asyncio.to_thread(
+            compute_perturbation_test,
+            spec,
+            req.perturbation_text,
+            req.perturbation_label,
+            req.n_components,
+            req.n_loadings,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/forgetting-curve")
+async def forgetting_curve(req: ForgettingRequest) -> Dict[str, Any]:
+    spec = req.corpus.to_spec()
+    try:
+        return await asyncio.to_thread(
+            compute_forgetting_curve,
+            spec,
+            req.n_components,
+            req.drop_fraction,
+            req.n_iterations,
             req.seed,
         )
     except ValueError as e:

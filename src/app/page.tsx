@@ -4,7 +4,10 @@ import { useState } from "react";
 import { CoarseGrainingTrajectory } from "@/components/operations/CoarseGrainingTrajectory";
 import { CorpusMap } from "@/components/operations/CorpusMap";
 import { Eigendirections } from "@/components/operations/Eigendirections";
+import { EmbeddingDependenceProbe } from "@/components/operations/EmbeddingDependenceProbe";
 import { FixedPointFinder } from "@/components/operations/FixedPointFinder";
+import { ForgettingCurve } from "@/components/operations/ForgettingCurve";
+import { PerturbationTest } from "@/components/operations/PerturbationTest";
 import { UniversalityClasses } from "@/components/operations/UniversalityClasses";
 import { CorpusLoader } from "@/components/layout/CorpusLoader";
 import { CorpusSourcePanel } from "@/components/layout/CorpusSourcePanel";
@@ -31,9 +34,9 @@ const TABS: Tab[] = [
   { key: "temporal-flow", label: "Temporal RG Flow", group: "Flow", component: null },
   { key: "symmetry-breaking", label: "Symmetry Breaking Map", group: "Critique", component: null },
   { key: "phase-diagram", label: "Phase Diagram", group: "Critique", component: null },
-  { key: "embedding-probe", label: "Embedding Dependence Probe", group: "Critique", component: null },
-  { key: "perturbation", label: "Perturbation Test", group: "Critique", component: null },
-  { key: "forgetting", label: "Forgetting Curve", group: "Critique", component: null },
+  { key: "embedding-probe", label: "Embedding Dependence Probe", group: "Critique", component: <EmbeddingDependenceProbe /> },
+  { key: "perturbation", label: "Perturbation Test", group: "Critique", component: <PerturbationTest /> },
+  { key: "forgetting", label: "Forgetting Curve", group: "Critique", component: <ForgettingCurve /> },
   { key: "translation", label: "Translated Corpus Probe", group: "Critique", component: null },
   { key: "corpus-vs-model", label: "Corpus-vs-Model Probe", group: "Critique", component: null },
   { key: "annotations", label: "Critical Annotations", group: "Annotations", component: null },

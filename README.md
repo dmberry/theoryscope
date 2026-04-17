@@ -11,7 +11,7 @@
 
 **Author:** David M. Berry
 **Institution:** University of Sussex
-**Version:** 0.2.0
+**Version:** 0.3.0
 **Date:** 17 April 2026
 **Licence:** MIT
 
@@ -267,7 +267,9 @@ Heavy visualisations (Plotly 3D scatter, and in later phases the Three.js flow a
 - [x] Phase 1.5: On-disk cache for embedded corpora (keyed by document IDs + chunking + embedding model)
 - [ ] Phase 1.5: Debated-vs-computed comparison UI (deferred from Phase 1)
 - [x] Phase 2: Flow core + three operations (Coarse-Graining Trajectory, Fixed Point Finder, Universality Class Finder) via aggregative k-means coarse-graining
+- [x] Phase 3A: Critique tab open — Embedding Dependence Probe, Perturbation Test, Forgetting Curve built on a shared eigenbasis-alignment primitive
 - [ ] Phase 2 cont.: Relevant / Irrelevant Operator Spectrum, Temporal RG Flow, semantic and lexical coarse-graining operators
+- [ ] Phase 3 cont.: Symmetry Breaking Map, Phase Diagram rendering, Translated Corpus Probe
 - [ ] Phase 3: Critique operations (Symmetry Breaking, Phase Diagram rendering, Embedding Dependence Probe, Perturbation Test, Forgetting Curve, Translated Corpus Probe)
 - [ ] Phase 4: Corpus-vs-Model Probe with worked example (AICT corpus vs small open-weight model); Atlas feature with first three entries; Critical Annotations Layer
 - [ ] Phase 5: Release blog post on Stunlaw (companion to *Renormalising Theory*)
