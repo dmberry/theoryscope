@@ -27,10 +27,12 @@ from .provenance import ChunkingSpec, CorpusSource, EmbeddingSpec
 
 CACHE_ROOT = Path(os.environ.get("THEORYSCOPE_CACHE_DIR", ".theoryscope-cache"))
 CORPORA_DIR = CACHE_ROOT / "corpora"
+TRANSLATIONS_DIR = CACHE_ROOT / "translations"
 
 
 def ensure_cache_dirs() -> None:
     CORPORA_DIR.mkdir(parents=True, exist_ok=True)
+    TRANSLATIONS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def corpus_cache_key(

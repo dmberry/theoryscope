@@ -11,7 +11,7 @@
 
 **Author:** David M. Berry
 **Institution:** University of Sussex
-**Version:** 0.5.0
+**Version:** 0.6.0
 **Date:** 17 April 2026
 **Licence:** MIT
 
@@ -43,7 +43,7 @@ The difference between a **chat model** and an **embedding model** is relevant h
 
 ## Operations at a Glance
 
-Theoryscope is organised as a tabbed workspace with five groups: three operational groups (Inspect, Flow, Critique) and two cross-cutting features (Annotations, Atlas). Live at v0.5.0: Inspect complete (five operations), Flow complete (five operations), three Critique operations.
+Theoryscope is organised as a tabbed workspace with five groups: three operational groups (Inspect, Flow, Critique) and two cross-cutting features (Annotations, Atlas). Live at v0.6.0: Inspect complete (5 ops), Flow complete (5 ops), Critique backends complete (6 ops — three shipped with frontend, three backend-only pending UI). `GET /status` lists all 16 operations.
 
 | Group | Operation | Status | Core question |
 |---|---|---|---|
@@ -60,9 +60,9 @@ Theoryscope is organised as a tabbed workspace with five groups: three operation
 | **Critique** | Embedding Dependence Probe | ✅ live | Do these results survive a different embedding? |
 | Critique | Perturbation Test | ✅ live | How robust is this result to a small change in the corpus? |
 | Critique | Forgetting Curve | ✅ live | How fragile are these eigendirections under bootstrap? |
-| Critique | Symmetry Breaking Map | ⏳ planned | Where does the field fragment, and along which axis? |
-| Critique | Phase Diagram | ⏳ planned | What does the flow field look like as a whole? |
-| Critique | Translated Corpus Probe | ⏳ planned | What survives translation? |
+| Critique | Symmetry Breaking Map | 🧪 backend | Where does the field fragment, and along which axis? |
+| Critique | Phase Diagram | 🧪 backend | What does the flow field look like as a whole? |
+| Critique | Translated Corpus Probe | 🧪 backend | What survives translation? |
 | Critique | Corpus-vs-Model Probe | ⏳ planned | Do the eigendirections of a corpus match those of a model trained on it? |
 | **Annotations** | Critical Annotations Layer | ⏳ planned | Markdown notes attached to any geometric feature, exported with the result. |
 | **Atlas** | Curated pre-run analyses | ⏳ planned | Curated entries on named corpora, with provenance and annotations. |
@@ -276,11 +276,12 @@ Heavy visualisations (Plotly 3D scatter, and in later phases the Three.js flow a
 - [x] Phase 3B: Vector Lab branding — gold accent for inner tier, tool mark, favicon, Help modal
 - [x] Phase 4A: Inspect completions — Concept Locator, Author Constellation, Debated-vs-Computed
 - [x] Phase 4B: Flow completions — Relevant / Irrelevant Operator Spectrum (variance-preservation scoring across the k-means flow) and Temporal RG Flow (progressively wider year-window aggregation)
+- [x] Phase 4C: Critique backends complete — Symmetry Breaking Map, Phase Diagram, Translated Corpus Probe. Routes live on the backend; frontends pending next session. Translated Corpus Probe uses local HelsinkiNLP Marian models (open-weight) with a disk-backed translation cache.
 
 ### Next
 
 - [ ] Flow cont.: semantic coarse-graining (local LLM paraphrase) and lexical coarse-graining (WordNet or domain synonyms)
-- [ ] Critique continuation: Symmetry Breaking Map, Phase Diagram rendering, Translated Corpus Probe
+- [ ] Critique frontends: `SymmetryBreaking.tsx`, `PhaseDiagram.tsx`, `TranslatedCorpusProbe.tsx` wired into the existing Critique tab slots
 - [ ] Corpus-vs-Model Probe with worked example (AICT corpus vs small open-weight model)
 - [ ] Atlas feature with first three entries; Critical Annotations Layer
 - [ ] Release blog post on Stunlaw (companion to *Renormalising Theory*)

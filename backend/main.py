@@ -42,9 +42,15 @@ from operations.operator_spectrum import (
     compute_operator_spectrum,
 )
 from operations.perturbation import compute_perturbation_test
+from operations.phase_diagram import compute_phase_diagram
+from operations.symmetry_breaking import compute_symmetry_breaking
 from operations.temporal_flow import compute_temporal_flow
+from operations.translation_probe import (
+    compute_translation_probe,
+    list_available_languages,
+)
 
-app = FastAPI(title="Theoryscope Backend", version="0.5.0")
+app = FastAPI(title="Theoryscope Backend", version="0.6.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -182,6 +188,26 @@ class TemporalFlowRequest(BaseModel):
     n_steps: int = 6
 
 
+class SymmetryBreakingRequest(BaseModel):
+    corpus: CorpusSourcePayload = Field(default_factory=CorpusSourcePayload)
+    splitter: str = "year_decade"
+    threshold: Optional[int] = None
+    n_components: int = 5
+
+
+class PhaseDiagramRequest(BaseModel):
+    corpus: CorpusSourcePayload = Field(default_factory=CorpusSourcePayload)
+    n_steps: int = 6
+    seed: int = 0
+
+
+class TranslationProbeRequest(BaseModel):
+    corpus: CorpusSourcePayload = Field(default_factory=CorpusSourcePayload)
+    target_lang: str
+    n_components: int = 5
+    n_samples: int = 3
+
+
 class ZoteroCollectionsRequest(BaseModel):
     library_id: str
     library_type: str
@@ -207,8 +233,8 @@ async def status() -> Dict[str, Any]:
     return {
         "status": "ok",
         "tool": "theoryscope",
-        "version": "0.5.0",
-        "phase": "Flow complete",
+        "version": "0.6.0",
+        "phase": "Critique complete (backends)",
         "corpora_available": ["philosophy-of-technology-v1", "zotero"],
         "operations_available": [
             "corpus_map",
@@ -224,8 +250,16 @@ async def status() -> Dict[str, Any]:
             "embedding_probe",
             "perturbation_test",
             "forgetting_curve",
+            "symmetry_breaking",
+            "phase_diagram",
+            "translation_probe",
         ],
     }
+
+
+@app.get("/translation-probe/languages")
+async def translation_probe_languages() -> Dict[str, Any]:
+    return {"languages": list_available_languages()}
 
 
 @app.get("/embedding-probe/models")
@@ -449,6 +483,56 @@ async def forgetting_curve(req: ForgettingRequest) -> Dict[str, Any]:
             req.drop_fraction,
             req.n_iterations,
             req.seed,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/symmetry-breaking")
+async def symmetry_breaking(req: SymmetryBreakingRequest) -> Dict[str, Any]:
+    spec = req.corpus.to_spec()
+    try:
+        return await asyncio.to_thread(
+            compute_symmetry_breaking,
+            spec,
+            req.splitter,
+            req.threshold,
+            req.n_components,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/phase-diagram")
+async def phase_diagram(req: PhaseDiagramRequest) -> Dict[str, Any]:
+    spec = req.corpus.to_spec()
+    try:
+        return await asyncio.to_thread(
+            compute_phase_diagram,
+            spec,
+            req.n_steps,
+            req.seed,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/translation-probe")
+async def translation_probe(req: TranslationProbeRequest) -> Dict[str, Any]:
+    spec = req.corpus.to_spec()
+    try:
+        return await asyncio.to_thread(
+            compute_translation_probe,
+            spec,
+            req.target_lang,
+            req.n_components,
+            req.n_samples,
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
