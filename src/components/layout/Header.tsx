@@ -10,9 +10,13 @@ type Props = {
 };
 
 /**
- * Header composition follows the Vector Lab convention established in
- * LLMbench: family mark + VECTOR LAB wordmark | tool icon + tool name |
- * current mode label. The tool mark is gold (inner-tier Vector Lab).
+ * Header composition follows the Vector Lab convention now standardised
+ * across Manifold Atlas and Diffusion Atlas: dark-navy family mark
+ * (#0a1f44 VL polygon) + VECTOR LAB wordmark | per-tool branded SVG +
+ * tool name | current mode label. Theoryscope's tool icon stays gold
+ * (#b8941e — inner tier, single-corpus scope).
+ *
+ * Asset paths use the canonical `public/icons/vector-lab-*.svg` naming.
  */
 export function Header({ currentTabLabel }: Props) {
   const [helpOpen, setHelpOpen] = useState(false);
@@ -26,10 +30,10 @@ export function Header({ currentTabLabel }: Props) {
           target="_blank"
           rel="noopener noreferrer"
           title="Vector Lab — research instruments for critical vector theory"
-          className="flex items-center gap-1.5 opacity-70 hover:opacity-100 transition-opacity shrink-0"
+          className="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity shrink-0"
         >
           <img
-            src="/vector-lab-mark.svg"
+            src="/icons/vector-lab-logo-mark.svg"
             alt="Vector Lab"
             width={20}
             height={20}
@@ -45,11 +49,11 @@ export function Header({ currentTabLabel }: Props) {
         {/* Theoryscope identity */}
         <div className="flex items-center gap-2 shrink-0">
           <img
-            src="/icon.svg"
+            src="/icons/vector-lab-theoryscope.svg"
             alt=""
-            width={18}
-            height={18}
-            className="w-[18px] h-[18px]"
+            width={20}
+            height={20}
+            className="w-5 h-5"
             aria-hidden="true"
           />
           <h1 className="font-display text-sm font-bold text-ink leading-none">

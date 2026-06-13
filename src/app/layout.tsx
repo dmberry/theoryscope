@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
     ],
-    apple: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/icons/vector-lab-theoryscope.svg", type: "image/svg+xml" }],
   },
 };
 

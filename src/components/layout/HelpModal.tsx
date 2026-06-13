@@ -30,7 +30,7 @@ export function HelpModal({ onClose }: { onClose: () => void }) {
         <header className="px-6 py-4 border-b border-ink/10 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <img
-              src="/icon.svg"
+              src="/icons/vector-lab-theoryscope.svg"
               alt=""
               width={32}
               height={32}
@@ -237,7 +237,7 @@ export function HelpModal({ onClose }: { onClose: () => void }) {
             className="flex items-center gap-2 text-xs text-ink/60 hover:text-ink transition-colors"
           >
             <img
-              src="/vector-lab-mark.svg"
+              src="/icons/vector-lab-logo-mark.svg"
               alt=""
               width={24}
               height={24}
