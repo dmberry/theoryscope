@@ -1,7 +1,9 @@
 {
   "name": "theoryscope",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "private": true,
+  "license": "GPL-3.0-or-later",
+  "author": "David M. Berry",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

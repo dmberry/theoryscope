@@ -19,7 +19,7 @@
 **Institution:** University of Sussex
 **Version:** 0.8.0
 **Date:** 17 April 2026
-**Licence:** MIT
+**Licence:** GPL-3.0-or-later
 
 Theoryscope is a web-based research tool that treats a corpus of theoretical texts as a geometry and asks renormalisation-group and eigenvector questions about it. It ingests a corpus, embeds each text with an open-weight model, and provides operations for inspecting the cloud's structure using vocabulary drawn from renormalisation group theory and linear algebra: principal eigendirections of a field, coarse-graining flows, fixed points, relevant and irrelevant operators, and universality classes.
 
@@ -311,4 +311,14 @@ Many thanks to John Hessler for the renormalisation group and deep-learning gene
 
 ## Licence
 
-MIT
+Copyright (C) 2025-2026 David M. Berry.
+
+Theoryscope is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+Theoryscope is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+The full licence text is in [LICENSE](LICENSE).
+
+**Relicensing note.** All prior versions of Theoryscope were released under the MIT Licence. As sole copyright holder, David M. Berry relicenses all past and present versions of Theoryscope under GPL-3.0-or-later, effective 2026-08-09. Any copy previously received under MIT terms may, at the recipient's option, continue to be used under those MIT terms; but the canonical licence for Theoryscope from this point forward, and retroactively for the whole codebase, is GPL-3.0-or-later.
